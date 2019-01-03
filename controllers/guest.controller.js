@@ -43,6 +43,7 @@ exports.createGuest = async function(req, res, next){
     var guest = {
         name: req.body.name,
         roomSize: req.body.roomSize,
+        roomNum: req.body.roomNum,
         payment: req.body.payment,
         numNight: req.body.numNight,
         status: req.body.status
@@ -75,7 +76,6 @@ exports.updateGuest = async function(req, res, next){
     var id = req.body._id;
 
     console.log(req.body)
-// suggestion: you could hold on the previous instead of nulling it out
     var guest = {
         id,
         name: req.body.name ? req.body.name : null,

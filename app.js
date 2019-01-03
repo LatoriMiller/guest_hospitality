@@ -20,7 +20,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+// Anything coming from local host is able to ask for data from a different ports ,
+// Then go ahead and do the next thing you were going to do instead of stopping the app next()
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  next();
+});
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 app.use('/api', api);
@@ -31,14 +38,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/guestapp', { useNewUrlParser: true }
     console.log(`Succesfully Connected to the Mongodb Database  at URL :mongodb://127.0.0.1:27017/guestapp`)})
   .catch(()=> { 
     console.log(`Error Connecting to the Mongodb Database at URL :mongodb://127.0.0.1:27017/guestapp`)
-});
-// Anything coming from local host is able to ask for data from a different ports ,
-// Then go ahead and do the next thing you were going to do instead of stopping the app next()
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
 });
 
 // catch 404 and forward to error handler
